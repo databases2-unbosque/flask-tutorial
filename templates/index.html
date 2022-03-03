@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>SALA app</title>
+  </head>
+  <body>
+    <h1>Welcome to SALA</h1>
+
+    <h3>Let's create a new subject:</h3>
+    
+    Code: <input id="code-input" name="code-input" type="text">
+    Name: <input id="name-input" name="name-input" type="text">
+    <button id="create-subject-button">Create</button>
+
+    <span id="subject-id"></span>
+
+    <script>
+      // Attach the click event to the button
+      document.getElementById("create-subject-button").addEventListener("click", _ => {
+
+        // Getting the values from the inputs
+        const code = document.getElementById("code-input").value;
+        const name = document.getElementById("name-input").value;
+
+        // Making the request to the backend
+        fetch("http://127.0.0.1:5000/subjects", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            "code": code,
+            "name": name,
+            "department_id": 1
+          })
+        }).then(response => response.json())
+          .then(data => {
+            console.log("New subject created: ", data);
+
+            document.getElementById("subject-id").innerHTML = "Created! " + data.subject_id;
+          });
+
+      });
+    </script>
+  </body>
+</html>
